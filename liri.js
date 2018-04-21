@@ -11,12 +11,9 @@ let client = new Twitter(keys.twitter);
 nodeArg = process.argv;
 let userInput = process.argv[2];
 
-
-
-
 switch (userInput) {
     case `my-tweets`:
-        // myTweets();
+        myTweets();
         break;
     case `spotify-this-song`:
          userInput = "";
@@ -36,48 +33,61 @@ switch (userInput) {
         // justDoIt();     
 }
 
-// function myTweets(){
-//     client.get('statuses/user_timeline', function(error, tweets, response) {
-//         // console.log((tweets.text));
-//         for (let i = 0; i < tweets.length; i++) {
-//             let alexTweets = tweets[i].text;
-//             let tweetDates = tweets[i].created_at;
-//             console.log("\n" + tweetDates + "\n" + alexTweets);
-//             // console.log(alexTweets);
-//         }
-//      });   
-// }
-// function spotifyThis(userInput) {
-//     spotify
-//         .search({
-//             type: 'track',
-//             query: userInput,
-//             limit: 1
-//         })
-//         .then(function (response) {
+function myTweets(){
+    client.get('statuses/user_timeline', function(error, tweets, response) {
+        // console.log((tweets.text));
+        for (let i = 0; i < tweets.length; i++) {
+            let alexTweets = tweets[i].text;
+            let tweetDates = tweets[i].created_at;
+            console.log("\n" + tweetDates + "\n" + alexTweets);
+            // console.log(alexTweets);
+        }
+     });   
+}
+function spotifyThis(userInput) {
+    spotify
+        .search({
+            type: 'track',
+            query: userInput,
+            limit: 1
+        })
+        .then(function (response) {
             
-//             console.log(`Artist:${response.tracks.items[0].album.artists[0].name}`);
+            console.log(`Artist:${response.tracks.items[0].album.artists[0].name}`);
             
-//             console.log(`Song Name:${response.tracks.items[0].name}`);
+            console.log(`Song Name:${response.tracks.items[0].name}`);
 
-//             console.log(`Album Name: ${response.tracks.items[0].album.name}`);
+            console.log(`Album Name: ${response.tracks.items[0].album.name}`);
 
-//             console.log(`Popularity Rating: ${response.tracks.items[0].popularity} `);
+            console.log(`Popularity Rating: ${response.tracks.items[0].popularity} `);
 
-//             console.log(`Check out a preview: ${response.tracks.items[0].external_urls.spotify}`);
-//         })
-//         .catch(function (err) {
-//             console.log(err);
-//         });
-// }
+            console.log(`Hey check this preview out: ${response.tracks.items[0].preview_url}`);
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+}
 function movieThis(userInput){
     request("http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
      if (!error && response.statusCode === 200) {
         //  console.log(JSON.parse(body));
-        // console.log(`This is your movie: ${JSON.parse(body).Title}`);
+        
+        console.log(`This is your movie: ${JSON.parse(body).Title}`);
 
          console.log(`The movie was released in: ${JSON.parse(body).Year}`);
  
+         console.log(`IMDB Rating: ${JSON.parse(body).imdbRating}`);
+
+          console.log(`Rotten Tomatoes Rating: ${JSON.parse(body).Ratings[1].Value}`);
+
+         console.log(`This movie was made in: ${JSON.parse(body).Country}`);
+
+          console.log(`This movie is available in the following languages: ${JSON.parse(body).Language}`);
+
+          console.log(`Plot: ${JSON.parse(body).Plot}`);
+
+          console.log(`Actors: ${JSON.parse(body).Actors}`);
+
         //     // If there were no errors and the response code was 200 (i.e. the request was successful)...
         //     if (!error && response.statusCode === 200) {
 }
