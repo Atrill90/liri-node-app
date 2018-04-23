@@ -28,10 +28,10 @@ switch (userInput) {
         for (let i = 3; i < nodeArg.length; i++) {
             userInput += nodeArg[i] + "+";
         }
-        movieThis(userInput);
+        inputChecker();
         break;
     case `do-what-it-says`:
-        // justDoIt();     
+        justDoIt();     
 }
 
 function myTweets() {
@@ -46,11 +46,11 @@ function myTweets() {
     });
 }
 
-function spotifyThis(userInput) {
+function spotifyThis(x) {
     spotify
         .search({
             type: 'track',
-            query: userInput,
+            query: x,
             limit: 1
         })
         .then(function (response) {
@@ -70,8 +70,17 @@ function spotifyThis(userInput) {
         });
 }
 
-function movieThis(userInput) {
-    request("http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+function inputChecker(){
+    if (userInput === "") {
+        var m = "Mr.+Nobody";
+        movieThis(m);
+    }else
+    movieThis(userInput);
+}
+
+
+function movieThis(x) {
+    request("http://www.omdbapi.com/?t=" + x + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
         if (!error && response.statusCode === 200) {
             //  console.log(JSON.parse(body));
 
@@ -96,5 +105,19 @@ function movieThis(userInput) {
         }
 
     });
+}
 
+function justDoIt(){
+    fs.readFile('random.txt', "utf-8", function (err, data){
+        if (err) {
+            return console.log(err); 
+        }
+        console.log(data);
+        var musicInput = data.split(",");
+        var actualInput = musicInput[1];
+        console.log(musicInput[1]);
+        var song = musicInput[1].replace(/"/g, "");
+        console.log(song);
+        spotifyThis(song);
+    })
 }
